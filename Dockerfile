@@ -1,3 +1,21 @@
+##
+# llm_interact - a handy tool for communicating with Ollama LLM models using Python
+# Copyright (C) 2025 Michael E. Cuffaro
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+##
+
 # This Dockerfile has been tested on a Raspberry Pi 5 running
 # Debian GNU/Linux 12 (bookworm) with the following output for the `uname -a` command:
 # Linux eilonwy 6.12.47+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.12.47-1+rpt1~bookworm (2025-09-16) aarch64 GNU/Linux

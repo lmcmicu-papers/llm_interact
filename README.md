@@ -1,4 +1,6 @@
-# Before you start
+# llm_interact
+
+## Before you start
 
 The following instructions assume that your physical hardware is a Raspberry Pi 5 running the Debian GNU/Linux 12 (bookworm) operating system, but the instructions should be easily adaptable to other linux flavours. The main thing is to specify, in the [Dockerfile](Dockerfile) contained in the root directory of this repository, the correct archive (`.tgz`) file for your host architecture from the desired [Ollama release](https://github.com/ollama/ollama/releases).
 
@@ -27,7 +29,13 @@ Note that in order for `interact.py` to run correctly, a directory named `data/`
 Run `make test` to verify that *llm_interact* is installed correctly after installing it for the first time. This will create a soft link directing llm_interact to find its data in `default_data`.
 
 	$ python3 src/interact.py --help
-	usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
+
+    llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions. Type sys[tem]:license for details.
+
+    usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
 	
 	Interact with LLMs from the Ollama library in various ways
 	
@@ -45,7 +53,13 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	  -h, --help            show this help message and exit
 	
 	$ python3 src/interact.py conduct-survey --help
-	usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
+    
+    llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions. Type sys[tem]:license for details.
+
+    usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
 	                                  [--std-dev X] [--rephrase-ratio R]
 	                                  [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
 	                                  [--mediator-type {llm,trivial}]
@@ -89,6 +103,12 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	                        caught.
 	
 	$ python3 src/interact.py vary --help
+    
+    llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions. Type sys[tem]:license for details.    
+
 	usage: interact.py vary [-h] [--models MODEL [MODEL ...]] [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
 	                        [--num-variants NUM_VARIANTS] [--sleep SECONDS] [--random-seed SEED] [--logfile LOGFILE]
 	                        [--trace]
@@ -113,6 +133,12 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	  --trace               Display stack trace information when exceptions are caught.
 	
 	$ python3 src/interact.py interact --help
+    
+    llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions. Type sys[tem]:license for details.
+    
 	usage: interact.py interact [-h] [--transient] [--random-seed SEED]
 	                            [--logfile LOGFILE] [--trace]
 	                            MODEL TEMPERATURE

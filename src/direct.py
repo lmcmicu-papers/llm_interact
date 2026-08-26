@@ -1,11 +1,41 @@
+##
+# llm_interact - a handy tool for communicating with Ollama LLM models using Python
+# Copyright (C) 2025 Michael E. Cuffaro
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+##
+
 import logging
 import re
 import sys
+import textwrap
 
 from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, SystemMessage
+from os.path import dirname, realpath
 
 from common import generate_context_message
+
+print(
+    textwrap.dedent("""
+    llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions. Type sys[tem]:license for details.
+    """)
+)
+
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +75,7 @@ def directly_interact(model, temperature, transient):
             sys[tem]:clear[ the] conversation history\n\
             sys[tem]:[turn ]transient mode on\n\
             sys[tem]:[turn ]transient mode off\n\
+            sys[tem]:license\n\
             sys[tem]:help"
 
             system_message = matches.group(2)
@@ -56,6 +87,12 @@ def directly_interact(model, temperature, transient):
             else:
                 if not system_message or system_message == "help":
                     print(f"The recognized system commands are:\n{recognized_instructions}")
+                elif system_message.casefold() in ["license", "licence"]:
+                    license_path = dirname(realpath(__file__))
+                    with open(f"{license_path}/../LICENSE") as fp:
+                        print(f"{fp.read()}")
+                    print()
+                    print("[What would you like to say now?]")
                 elif re.fullmatch(r"show([ ]+the|[ ]+our){0,1}[ ]+conversation history",
                                   system_message.casefold()):
                     if transient:

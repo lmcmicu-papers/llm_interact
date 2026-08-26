@@ -1,7 +1,31 @@
 #!/usr/bin/env bash
 
+##
+# llm_interact - a handy tool for communicating with Ollama LLM models using Python
+# Copyright (C) 2025 Michael E. Cuffaro
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+##
+
 cat <<EOF > saved_usage.$$
 $ python3 src/interact.py --help
+
+llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions. Type sys[tem]:license for details.
+
 usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
 
 Interact with LLMs from the Ollama library in various ways
@@ -20,6 +44,12 @@ options:
   -h, --help            show this help message and exit
 
 $ python3 src/interact.py conduct-survey --help
+
+llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions. Type sys[tem]:license for details.
+
 usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
                                   [--std-dev X] [--rephrase-ratio R]
                                   [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
@@ -64,6 +94,12 @@ options:
                         caught.
 
 $ python3 src/interact.py vary --help
+
+llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions. Type sys[tem]:license for details.
+
 usage: interact.py vary [-h] [--models MODEL [MODEL ...]]
                         [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
                         [--num-variants NUM_VARIANTS] [--sleep SECONDS]
@@ -96,6 +132,12 @@ options:
                         caught.
 
 $ python3 src/interact.py interact --help
+
+llm_interact  Copyright (C) 2025 Michael E. Cuffaro
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions. Type sys[tem]:license for details.
+
 usage: interact.py interact [-h] [--transient] [--random-seed SEED]
                             [--logfile LOGFILE] [--trace]
                             MODEL TEMPERATURE
