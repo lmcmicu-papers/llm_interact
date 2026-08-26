@@ -30,7 +30,7 @@ import time
 
 from common import generate_context_message
 from global_vars import MAX_MEMORY, DEFAULT_SLEEP, DEFAULT_VARIER_LLM_TEMPERATURE, \
-    DEFAULT_MEDIATOR_LLM_MODEL, LLM_RESPONSE_TIMEOUT
+    DEFAULT_MEDIATOR_LLM_MODEL, DEFAULT_MEDIATOR_LLM_MODEL_ALT, LLM_RESPONSE_TIMEOUT
 from mediator import Mediator
 
 
@@ -213,9 +213,17 @@ def generate_variations(labels, cli_args):
     num_variants = cli_args['num_variants']
     with open(csv_filename, 'w') as csvfile:
         mediator_type = 'trivial' if cli_args['models'] == ['trivial'] else 'llm'
+        mediator_model = None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL
+        # A model should not be a mediator for itself, so we initialize an alternate to handle
+        # those cases:
+        mediator_alt_model = None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL_ALT
         mediator = Mediator({
-            "mediator_type": f"{mediator_type}",
-            "llm_mediator_model": None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL
+            "mediator_type": mediator_type,
+            "llm_mediator_model": mediator_model
+        })
+        mediator_alt = Mediator({
+            "mediator_type": mediator_type,
+            "llm_mediator_model": mediator_alt_model
         })
         writer = None
         for i, model in enumerate(models):
@@ -245,14 +253,23 @@ def generate_variations(labels, cli_args):
                 # the last line about summarizing the instructions to make sure that they
                 # are understood.
                 original_instructions = '\n'.join(
-                    prepare_varier_message(num_variants).split('\n')[:-1]
+                    prepare_varier_message(num_variants).split('\n')[:-2]
                 )
-                variants = mediator.prune_variants(
-                    label,
-                    original_instructions,
-                    variants,
-                    num_variants
-                )
+                if model != mediator.get_model():
+                    variants = mediator.prune_variants(
+                        label,
+                        original_instructions,
+                        variants,
+                        num_variants
+                    )
+                else:
+                    variants = mediator_alt.prune_variants(
+                        label,
+                        original_instructions,
+                        variants,
+                        num_variants
+                    )
+
                 duration = time.time() - start
                 logger.info(f"Got {len(variants)} sentences from mediator after {duration}s.")
                 mediator.reset()

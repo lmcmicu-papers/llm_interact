@@ -40,9 +40,9 @@ options:
 $ python3 src/interact.py conduct-survey --help
 usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
                                   [--std-dev X] [--rephrase-ratio R]
-                                  [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+                                  [--participant-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
                                   [--mediator-type {llm,trivial}]
-                                  [--llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+                                  [--llm-mediator-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
                                   [--llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE]
                                   [--sleep SECONDS] [--random-seed SEED]
                                   [--logfile LOGFILE] [--trace]
@@ -62,14 +62,15 @@ options:
                         participant's temperature (default: 0.2).
   --rephrase-ratio R    The proportion of messages (between 0 and 1) that
                         should be rephrased by the mediator (default: 0.9).
-  --participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+  --participant-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
                         The model LLM to use for every participant (default:
                         use a random non-trivial model for every participant).
   --mediator-type {llm,trivial}
                         The type of mediator to use (default: llm).
-  --llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
-                        The LLM model to use as a mediator (default:
-                        gemma3:1b). Only applicable to mediators of type 'llm'
+  --llm-mediator-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+                        The LLM model to use as a mediator (default: llama3.1,
+                        alternate: mistral). Only applicable to mediators of
+                        type 'llm'
   --llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE
                         The temperature of the mediator (default 0.0). Only
                         applicable to mediators of type 'llm'

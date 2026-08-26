@@ -33,7 +33,7 @@ from direct import directly_interact
 from vary import generate_variations
 from global_vars import SUPPORTED_MODELS, \
     DEFAULT_NUM_PARTICIPANTS, DEFAULT_MEAN, DEFAULT_STD_DEV, \
-    DEFAULT_MEDIATOR_LLM_MODEL, DEFAULT_MEDIATOR_LLM_TEMPERATURE, \
+    DEFAULT_MEDIATOR_LLM_MODEL, DEFAULT_MEDIATOR_LLM_MODEL_ALT, DEFAULT_MEDIATOR_LLM_TEMPERATURE, \
     DEFAULT_REPHRASE_RATIO, DEFAULT_SLEEP, \
     DEFAULT_SURVEY_LOGFILE_PREFIX, DEFAULT_VARIATIONS_LOGFILE_PREFIX, \
     DEFAULT_INTERACT_LOGFILE_PREFIX, DEFAULT_CUSTOM_LOGFILE_PREFIX, \
@@ -256,7 +256,7 @@ def main(args):
         choices=SUPPORTED_MODELS,
         default=DEFAULT_MEDIATOR_LLM_MODEL,
         help=("The LLM model to use as a mediator (default: "
-              f"{DEFAULT_MEDIATOR_LLM_MODEL}). "
+              f"{DEFAULT_MEDIATOR_LLM_MODEL}, alternate: {DEFAULT_MEDIATOR_LLM_MODEL_ALT}). "
               "Only applicable to mediators of type 'llm'"),
     )
     survey_parser.add_argument(

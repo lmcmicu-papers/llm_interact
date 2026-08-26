@@ -23,13 +23,13 @@ import json
 # To get just the model ids run `ollama list|awk '{print $2}'|grep -v "ID"`.
 SUPPORTED_MODELS = [
     "trivial",
+    "llama3.1",
+    "mistral",
+    "pshohel/gemini-3-pro-preview",
     "openchat",
     "gemma3:1b",
     "llama3.2",
-    "mistral",
-    "pshohel/gemini-3-pro-preview",
     "deepseek-r1",
-    "llama3.1",
     "gemma",
     "stable-beluga",
     "orca-mini",
@@ -62,7 +62,8 @@ DEFAULT_MEAN = 0.6
 # each participant's temperature:
 DEFAULT_STD_DEV = 0.2
 
-DEFAULT_MEDIATOR_LLM_MODEL = "gemma3:1b"
+DEFAULT_MEDIATOR_LLM_MODEL = "llama3.1"
+DEFAULT_MEDIATOR_LLM_MODEL_ALT = "mistral"
 
 # See https://markaicode.com/ollama-temperature-parameter-tuning-guide/
 DEFAULT_MEDIATOR_LLM_TEMPERATURE = 0.0

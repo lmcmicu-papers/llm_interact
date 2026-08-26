@@ -24,12 +24,12 @@ Using GitHub client (if installed):
 
 ## Using interact.py
 
-Note that in order for `interact.py` to run correctly, a directory named `data/` must exist and must include all the same data files as the ones in `default_data`. Unless you only intend to run interact in `direct` mode, you should customize the contents of those files.
+Note that in order for `interact.py` to run correctly, a directory named `data/` must exist and must include all the same data files as the ones in `default_data`. Unless you only intend to run interact in `direct` mode, you should customize the contents of those files. Run `make test` to verify that *llm_interact* is installed correctly after installing it for the first time. This will create a soft link directing llm_interact to find its data in `default_data`.
 
-Run `make test` to verify that *llm_interact* is installed correctly after installing it for the first time. This will create a soft link directing llm_interact to find its data in `default_data`.
+To see the command line options for `interact.py`, run:
 
 	$ python3 src/interact.py --help
-    usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
+	usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
 	
 	Interact with LLMs from the Ollama library in various ways
 	
@@ -47,11 +47,11 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	  -h, --help            show this help message and exit
 	
 	$ python3 src/interact.py conduct-survey --help
-    usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
+	usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
 	                                  [--std-dev X] [--rephrase-ratio R]
-	                                  [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+	                                  [--participant-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
 	                                  [--mediator-type {llm,trivial}]
-	                                  [--llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+	                                  [--llm-mediator-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
 	                                  [--llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE]
 	                                  [--sleep SECONDS] [--random-seed SEED]
 	                                  [--logfile LOGFILE] [--trace]
@@ -71,14 +71,15 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	                        participant's temperature (default: 0.2).
 	  --rephrase-ratio R    The proportion of messages (between 0 and 1) that
 	                        should be rephrased by the mediator (default: 0.9).
-	  --participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+	  --participant-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
 	                        The model LLM to use for every participant (default:
 	                        use a random non-trivial model for every participant).
 	  --mediator-type {llm,trivial}
 	                        The type of mediator to use (default: llm).
-	  --llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
-	                        The LLM model to use as a mediator (default:
-	                        gemma3:1b). Only applicable to mediators of type 'llm'
+	  --llm-mediator-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+	                        The LLM model to use as a mediator (default: llama3.1,
+	                        alternate: mistral). Only applicable to mediators of
+	                        type 'llm'
 	  --llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE
 	                        The temperature of the mediator (default 0.0). Only
 	                        applicable to mediators of type 'llm'
@@ -91,9 +92,10 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	                        caught.
 	
 	$ python3 src/interact.py vary --help
-	usage: interact.py vary [-h] [--models MODEL [MODEL ...]] [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
-	                        [--num-variants NUM_VARIANTS] [--sleep SECONDS] [--random-seed SEED] [--logfile LOGFILE]
-	                        [--trace]
+	usage: interact.py vary [-h] [--models MODEL [MODEL ...]]
+	                        [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
+	                        [--num-variants NUM_VARIANTS] [--sleep SECONDS]
+	                        [--random-seed SEED] [--logfile LOGFILE] [--trace]
 	                        OUTPUT
 	
 	positional arguments:
@@ -102,20 +104,27 @@ Run `make test` to verify that *llm_interact* is installed correctly after insta
 	options:
 	  -h, --help            show this help message and exit
 	  --models MODEL [MODEL ...]
-	                        A list of the model(s) to use for generating variations (default: all non-trivial models)
+	                        A list of the model(s) to use for generating
+	                        variations (default: all non-trivial models)
 	  --exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]
-	                        A list of models that should not be used when generating variations. In the case of a
-	                        conflict between --models and --exclude, the latter takes priority. (default: no models
-	                        excluded)
+	                        A list of models that should not be used when
+	                        generating variations. In the case of a conflict
+	                        between --models and --exclude, the latter takes
+	                        priority. (default: no models excluded)
 	  --num-variants NUM_VARIANTS
-	                        The total number of variations of the given label to generate.
-	  --sleep SECONDS       The number of seconds to sleep after generating each set of variations (default: 60 seconds)
-	  --random-seed SEED    Specify a SEED for the random number generator (normally only for testing).
-	  --logfile LOGFILE     Write logging output to LOGFILE (defaults to 'vary.log')
-	  --trace               Display stack trace information when exceptions are caught.
+	                        The total number of variations of the given label to
+	                        generate.
+	  --sleep SECONDS       The number of seconds to sleep after generating each
+	                        set of variations (default: 60 seconds)
+	  --random-seed SEED    Specify a SEED for the random number generator
+	                        (normally only for testing).
+	  --logfile LOGFILE     Write logging output to LOGFILE (defaults to
+	                        'vary.log')
+	  --trace               Display stack trace information when exceptions are
+	                        caught.
 	
 	$ python3 src/interact.py interact --help
-    usage: interact.py interact [-h] [--transient] [--random-seed SEED]
+	usage: interact.py interact [-h] [--transient] [--random-seed SEED]
 	                            [--logfile LOGFILE] [--trace]
 	                            MODEL TEMPERATURE
 	

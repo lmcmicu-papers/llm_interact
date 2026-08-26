@@ -2,3 +2,5 @@
 .git-previous-history/
 test/output/
 src/__pycache__/
+data
+data/*
