@@ -226,7 +226,8 @@ def generate_variations(labels, cli_args):
         mediator_model = None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL
         # A model should not be a mediator for its own kind, so we initialize an alternate to
         # handle those cases:
-        mediator_alt_model = None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL_ALT
+        mediator_alt_model = 'trivial' if mediator_type == 'trivial' \
+            else DEFAULT_MEDIATOR_LLM_MODEL_ALT
         mediator = Mediator({
             "mediator_type": mediator_type,
             "llm_mediator_model": mediator_model
@@ -253,6 +254,19 @@ def generate_variations(labels, cli_args):
                 logger.info(f"Got {len(variants)} sentences from {model} after {duration}s.")
                 varier.reset()
 
+                # Initialize the CSV writer if it hasn't been initialized already:
+                if not writer:
+                    writer = csv.DictWriter(csvfile, fieldnames=[
+                        "model",
+                        "mediator_model",
+                        "label",
+                        "variant",
+                    ])
+                    writer.writeheader()
+
+                # Output the variants, before pruning, to CSV:
+                write_csvfile(writer, model, None, label, variants)
+
                 sleep_time = round(max(min_sleep_time, duration / 10))
                 logger.info(f"Sleeping for {sleep_time}s before waking up the mediator.")
                 time.sleep(sleep_time)
@@ -266,38 +280,24 @@ def generate_variations(labels, cli_args):
                     prepare_varier_message(num_variants).split('\n')[:-2]
                 )
                 # A model should not be the mediator for its own kind:
-                if model != mediator.get_model():
-                    pruned_variants = mediator.prune_variants(
-                        label,
-                        original_instructions,
-                        variants,
-                        num_variants
-                    )
-                else:
-                    pruned_variants = mediator_alt.prune_variants(
-                        label,
-                        original_instructions,
-                        variants,
-                        num_variants
-                    )
+                assigned_mediator = mediator_alt if model == mediator.get_model() else mediator
+                assigned_mediator_model = assigned_mediator.get_model()
+                pruned_variants = assigned_mediator.prune_variants(
+                    label,
+                    original_instructions,
+                    variants,
+                    num_variants
+                )
 
                 duration = round(time.time() - start)
                 logger.info(
-                    f"Got {len(pruned_variants)} sentences from mediator after {duration}s."
+                    f"Got {len(pruned_variants)} sentences from mediator "
+                    f"{assigned_mediator_model} after {duration}s."
                 )
                 mediator.reset()
 
-                # Output the non-pruned and pruned variants:
-                if not writer:
-                    writer = csv.DictWriter(csvfile, fieldnames=[
-                        "model",
-                        "mediator_model",
-                        "label",
-                        "variant",
-                    ])
-                    writer.writeheader()
-                write_csvfile(writer, model, None, label, variants)
-                write_csvfile(writer, model, mediator.get_model(), label, pruned_variants)
+                # Output the pruned variants to CSV:
+                write_csvfile(writer, model, assigned_mediator_model, label, pruned_variants)
 
                 # Give the CPU(s) a break (unless we are done):
                 if i != len(cli_args["models"]) and j != len(labels):
