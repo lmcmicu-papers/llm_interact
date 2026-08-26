@@ -160,8 +160,8 @@ class Mediator_LLM:
                 logger.error("Could not read variation pruning prompt")
                 sys.exit(1)
 
-            instructions = indent(instructions, "            > ")
-            variants = indent("{}".format("\n".join(variants)), "            > ")
+            instructions = indent(instructions, "> ")
+            variants = indent("{}".format("\n".join(variants)), "> ")
             mediator_message = mediator_message.format(
                 label=label,
                 num_variants=num_variants,

@@ -226,7 +226,9 @@ def generate_variations(labels, cli_args):
                 # are determined by getting the varier preparation message and removing
                 # the last line about summarizing the instructions to make sure that they
                 # are understood.
-                original_instructions = prepare_varier_message(num_variants).split('\n')[:-1]
+                original_instructions = '\n'.join(
+                    prepare_varier_message(num_variants).split('\n')[:-1]
+                )
                 variants = mediator.prune_variants(
                     label,
                     original_instructions,
