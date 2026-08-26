@@ -8,6 +8,10 @@ SHELL := bash
 
 .PHONY: test test_survey test_vary llm analyze
 
+data:
+	ln -s default_data data
+
+
 analyze:
 	mkdir -p Results/2026-07-20/analysis
 	python3 src/interact.py analyze --trace variations \
@@ -16,8 +20,10 @@ analyze:
 test/output:
 	mkdir -p $@
 
+test_data: | data
+
 # Sanity test that black-boxes the calls to ollama:
-test: cleantest test_vary test_survey
+test: cleantest test_data test_vary test_survey
 
 test_vary: | test/output
 	python3 src/interact.py vary $|/variations.csv \

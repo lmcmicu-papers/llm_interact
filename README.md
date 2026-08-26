@@ -22,6 +22,10 @@ Using GitHub client (if installed):
 
 ## Using interact.py
 
+Note that in order for `interact.py` to run correctly, a directory named `data/` must exist and must include all the same data files as the ones in `default_data`. Unless you only intend to run interact in `direct` mode, you should customize the contents of those files.
+
+Run `make test` to verify that *llm_interact* is installed correctly after installing it for the first time. This will create a soft link directing llm_interact to find its data in `default_data`.
+
 	$ python3 src/interact.py --help
 	usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
 	

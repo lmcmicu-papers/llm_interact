@@ -1,0 +1,14 @@
+Here is a sentence I would like you to examine, involving the label '{label}'.
+Here are some instructions that I gave to another LLM:
+
+=== Beginning of my instructions to the LLM ===
+{instructions}
+=== End of my instructions to the LLM ===
+
+Here are the LLMs responses:
+
+=== Beginning of the LLMs responses ===
+{variants}
+=== End of the LLMs responses
+
+Please do something.

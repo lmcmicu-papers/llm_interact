@@ -1,0 +1,8 @@
+{
+  "GNU's not UNIX": {
+    "best": "gemini",
+    "gemini": "GNU is not the operating systen UNIX.",
+    "gpt": "GNU is similar to UNIX but not the same.",
+    "claude": "GNU and UNIX are opposites."
+  }
+}
