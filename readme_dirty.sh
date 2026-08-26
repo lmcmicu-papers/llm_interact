@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+cat <<EOF > saved_usage.$$
+$ python3 src/interact.py --help
+usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
+
+Interact with LLMs from the Ollama library in various ways
+
+positional arguments:
+  {conduct-survey,vary,analyze,interact,custom}
+                        Use --help with the subcommand name to get help
+                        specific to that command.
+    conduct-survey      Conduct a survey with N participants
+    vary                Generate label variants
+    analyze             Analyze data
+    interact            Directly interact with an LLM
+    custom              Run a customized sequence of interactions with an LLM.
+
+options:
+  -h, --help            show this help message and exit
+
+$ python3 src/interact.py conduct-survey --help
+usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
+                                  [--std-dev X] [--rephrase-ratio R]
+                                  [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+                                  [--mediator-type {llm,trivial}]
+                                  [--llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+                                  [--llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE]
+                                  [--sleep SECONDS] [--random-seed SEED]
+                                  [--logfile LOGFILE] [--trace]
+                                  OUTPUT
+
+positional arguments:
+  OUTPUT                The filename to which the CSV data will be written
+
+options:
+  -h, --help            show this help message and exit
+  --participants N      The number of participants to survey (default: 100)
+  --mean X              The value of the mean of the normal distribution used
+                        to determine each participant's temperature (default:
+                        0.6).
+  --std-dev X           The value of the standard deviation (or 'width') of
+                        the normal distribution used to determine each
+                        participant's temperature (default: 0.2).
+  --rephrase-ratio R    The proportion of messages (between 0 and 1) that
+                        should be rephrased by the mediator (default: 0.9).
+  --participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+                        The model LLM to use for every participant (default:
+                        use a random non-trivial model for every participant).
+  --mediator-type {llm,trivial}
+                        The type of mediator to use (default: llm).
+  --llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+                        The LLM model to use as a mediator (default:
+                        gemma3:1b). Only applicable to mediators of type 'llm'
+  --llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE
+                        The temperature of the mediator (default 0.0). Only
+                        applicable to mediators of type 'llm'
+  --sleep SECONDS       The number of seconds to sleep after surveying each
+                        participant (default: 60)
+  --random-seed SEED    Specify a SEED for the random number generator.
+  --logfile LOGFILE     Write logging output to LOGFILE (defaults to
+                        survey.log).
+  --trace               Display stack trace information when exceptions are
+                        caught.
+
+$ python3 src/interact.py explicate --help
+
+$ python3 src/interact.py interact --help
+usage: interact.py interact [-h] [--transient] [--random-seed SEED]
+                            [--logfile LOGFILE] [--trace]
+                            MODEL TEMPERATURE
+
+positional arguments:
+  MODEL               The name of the model to interact with.
+  TEMPERATURE         The temperature to use.
+
+options:
+  -h, --help          show this help message and exit
+  --transient         Do not keep track of the conversation but begin every
+                      question with a clean slate.
+  --random-seed SEED  Specify a SEED for the random number generator (normally
+                      only for testing).
+  --logfile LOGFILE   Write logging output to LOGFILE (defaults to
+                      'interact.log')
+  --trace             Display stack trace information when exceptions are
+                      caught.
+EOF
+
+echo "$ python3 src/interact.py --help" > current_usage.$$
+python3 src/interact.py --help >> current_usage.$$
+echo >> current_usage.$$
+echo "$ python3 src/interact.py conduct-survey --help" >> current_usage.$$
+python3 src/interact.py conduct-survey --help >> current_usage.$$
+echo >> current_usage.$$
+echo "$ python3 src/interact.py explicate --help" >> current_usage.$$
+python3 src/interact.py explicate --help >> current_usage.$$
+echo >> current_usage.$$
+echo "$ python3 src/interact.py interact --help" >> current_usage.$$
+python3 src/interact.py interact --help >> current_usage.$$
+diff --strip-trailing-cr -q saved_usage.$$ current_usage.$$ > /dev/null
+if [[ $? -eq 0 ]]
+then
+    echo "The saved usage is up to date"
+    rm -f *.$$
+else
+    echo "The saved usage is not up to date."
+    echo "Here are the differences:"
+    echo "-----"
+    diff --strip-trailing-cr saved_usage.$$ current_usage.$$ | tail -n +2
+    echo
+    echo "Here is the current usage:"
+    echo "-----"
+    cat current_usage.$$
+    rm -f *.$$
+    exit 1
+fi

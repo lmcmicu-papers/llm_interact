@@ -1,0 +1,4 @@
+.git-hooks/
+.git-previous-history/
+test/output/
+src/__pycache__/

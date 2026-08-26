@@ -1,0 +1,4 @@
+langchain==1.0.0a12
+langchain-core==1.0.0a7
+langchain-ollama==1.0.0a1
+numpy==2.3.5
