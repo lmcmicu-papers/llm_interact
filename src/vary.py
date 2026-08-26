@@ -214,8 +214,8 @@ def generate_variations(labels, cli_args):
     with open(csv_filename, 'w') as csvfile:
         mediator_type = 'trivial' if cli_args['models'] == ['trivial'] else 'llm'
         mediator_model = None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL
-        # A model should not be a mediator for itself, so we initialize an alternate to handle
-        # those cases:
+        # A model should not be a mediator for its own kind, so we initialize an alternate to
+        # handle those cases:
         mediator_alt_model = None if mediator_type == 'trivial' else DEFAULT_MEDIATOR_LLM_MODEL_ALT
         mediator = Mediator({
             "mediator_type": mediator_type,
@@ -239,7 +239,7 @@ def generate_variations(labels, cli_args):
 
                 start = time.time()
                 variants = varier.vary(label, num_variants, min_sleep_time)
-                duration = time.time() - start
+                duration = round(time.time() - start)
                 logger.info(f"Got {len(variants)} sentences from {model} after {duration}s.")
                 varier.reset()
 
@@ -255,6 +255,7 @@ def generate_variations(labels, cli_args):
                 original_instructions = '\n'.join(
                     prepare_varier_message(num_variants).split('\n')[:-2]
                 )
+                # A model should not be the mediator for its own kind:
                 if model != mediator.get_model():
                     variants = mediator.prune_variants(
                         label,
@@ -270,7 +271,7 @@ def generate_variations(labels, cli_args):
                         num_variants
                     )
 
-                duration = time.time() - start
+                duration = round(time.time() - start)
                 logger.info(f"Got {len(variants)} sentences from mediator after {duration}s.")
                 mediator.reset()
 
