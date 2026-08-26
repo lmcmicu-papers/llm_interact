@@ -20,12 +20,6 @@
 
 cat <<EOF > saved_usage.$$
 $ python3 src/interact.py --help
-
-llm_interact  Copyright (C) 2025 Michael E. Cuffaro
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it
-under certain conditions. Type sys[tem]:license for details.
-
 usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
 
 Interact with LLMs from the Ollama library in various ways
@@ -44,12 +38,6 @@ options:
   -h, --help            show this help message and exit
 
 $ python3 src/interact.py conduct-survey --help
-
-llm_interact  Copyright (C) 2025 Michael E. Cuffaro
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it
-under certain conditions. Type sys[tem]:license for details.
-
 usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
                                   [--std-dev X] [--rephrase-ratio R]
                                   [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
@@ -94,12 +82,6 @@ options:
                         caught.
 
 $ python3 src/interact.py vary --help
-
-llm_interact  Copyright (C) 2025 Michael E. Cuffaro
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it
-under certain conditions. Type sys[tem]:license for details.
-
 usage: interact.py vary [-h] [--models MODEL [MODEL ...]]
                         [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
                         [--num-variants NUM_VARIANTS] [--sleep SECONDS]
@@ -132,12 +114,6 @@ options:
                         caught.
 
 $ python3 src/interact.py interact --help
-
-llm_interact  Copyright (C) 2025 Michael E. Cuffaro
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it
-under certain conditions. Type sys[tem]:license for details.
-
 usage: interact.py interact [-h] [--transient] [--random-seed SEED]
                             [--logfile LOGFILE] [--trace]
                             MODEL TEMPERATURE

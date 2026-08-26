@@ -22,6 +22,7 @@ import csv
 import numpy
 import os
 import sys
+import textwrap
 import traceback
 
 from argparse import ArgumentParser
@@ -174,6 +175,14 @@ def handle_interact_args(args):
     transient = args["transient"]
 
     try:
+        print(
+            textwrap.dedent("""
+            llm_interact - Copyright (C) 2025 Michael E. Cuffaro
+            This program comes with ABSOLUTELY NO WARRANTY.
+            This is free software, and you are welcome to redistribute it
+            under certain conditions. Type sys[tem]:license for details.
+            """)
+        )
         directly_interact(model, temperature, transient)
     except KeyboardInterrupt:
         pass

@@ -19,23 +19,12 @@
 import logging
 import re
 import sys
-import textwrap
 
 from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, SystemMessage
 from os.path import dirname, realpath
 
 from common import generate_context_message
-
-print(
-    textwrap.dedent("""
-    llm_interact  Copyright (C) 2025 Michael E. Cuffaro
-    This program comes with ABSOLUTELY NO WARRANTY.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions. Type sys[tem]:license for details.
-    """)
-)
-
 
 logger = logging.getLogger(__name__)
 
