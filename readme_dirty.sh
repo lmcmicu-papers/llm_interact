@@ -63,7 +63,37 @@ options:
   --trace               Display stack trace information when exceptions are
                         caught.
 
-$ python3 src/interact.py explicate --help
+$ python3 src/interact.py vary --help
+usage: interact.py vary [-h] [--models MODEL [MODEL ...]]
+                        [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
+                        [--num-variants NUM_VARIANTS] [--sleep SECONDS]
+                        [--random-seed SEED] [--logfile LOGFILE] [--trace]
+                        OUTPUT
+
+positional arguments:
+  OUTPUT                The filename to which the CSV data will be written
+
+options:
+  -h, --help            show this help message and exit
+  --models MODEL [MODEL ...]
+                        A list of the model(s) to use for generating
+                        variations (default: all non-trivial models)
+  --exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]
+                        A list of models that should not be used when
+                        generating variations. In the case of a conflict
+                        between --models and --exclude, the latter takes
+                        priority. (default: no models excluded)
+  --num-variants NUM_VARIANTS
+                        The total number of variations of the given label to
+                        generate.
+  --sleep SECONDS       The number of seconds to sleep after generating each
+                        set of variations (default: 60 seconds)
+  --random-seed SEED    Specify a SEED for the random number generator
+                        (normally only for testing).
+  --logfile LOGFILE     Write logging output to LOGFILE (defaults to
+                        'vary.log')
+  --trace               Display stack trace information when exceptions are
+                        caught.
 
 $ python3 src/interact.py interact --help
 usage: interact.py interact [-h] [--transient] [--random-seed SEED]
@@ -92,8 +122,8 @@ echo >> current_usage.$$
 echo "$ python3 src/interact.py conduct-survey --help" >> current_usage.$$
 python3 src/interact.py conduct-survey --help >> current_usage.$$
 echo >> current_usage.$$
-echo "$ python3 src/interact.py explicate --help" >> current_usage.$$
-python3 src/interact.py explicate --help >> current_usage.$$
+echo "$ python3 src/interact.py vary --help" >> current_usage.$$
+python3 src/interact.py vary --help >> current_usage.$$
 echo >> current_usage.$$
 echo "$ python3 src/interact.py interact --help" >> current_usage.$$
 python3 src/interact.py interact --help >> current_usage.$$

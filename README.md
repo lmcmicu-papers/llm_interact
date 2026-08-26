@@ -22,11 +22,11 @@ Using GitHub client (if installed):
 
 ## Using interact.py
 
-    $ python3 src/interact.py --help
-    usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
-
-    Interact with LLMs from the Ollama library in various ways
-
+	$ python3 src/interact.py --help
+	usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
+	
+	Interact with LLMs from the Ollama library in various ways
+	
 	positional arguments:
 	  {conduct-survey,vary,analyze,interact,custom}
 	                        Use --help with the subcommand name to get help
@@ -36,24 +36,24 @@ Using GitHub client (if installed):
 	    analyze             Analyze data
 	    interact            Directly interact with an LLM
 	    custom              Run a customized sequence of interactions with an LLM.
-
+	
 	options:
 	  -h, --help            show this help message and exit
-
+	
 	$ python3 src/interact.py conduct-survey --help
 	usage: interact.py conduct-survey [-h] [--participants N] [--mean X]
 	                                  [--std-dev X] [--rephrase-ratio R]
-	                                  [--participant-model 	[{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+	                                  [--participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
 	                                  [--mediator-type {llm,trivial}]
-	                                  [--llm-mediator-model 	[{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
+	                                  [--llm-mediator-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]]
 	                                  [--llm-mediator-temperature LLM_MEDIATOR_TEMPERATURE]
 	                                  [--sleep SECONDS] [--random-seed SEED]
 	                                  [--logfile LOGFILE] [--trace]
 	                                  OUTPUT
-
+	
 	positional arguments:
 	  OUTPUT                The filename to which the CSV data will be written
-
+	
 	options:
 	  -h, --help            show this help message and exit
 	  --participants N      The number of participants to survey (default: 100)
@@ -65,7 +65,7 @@ Using GitHub client (if installed):
 	                        participant's temperature (default: 0.2).
 	  --rephrase-ratio R    The proportion of messages (between 0 and 1) that
 	                        should be rephrased by the mediator (default: 0.9).
-	  --participant-model 	[{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+	  --participant-model [{trivial,openchat,gemma3:1b,llama3.2,mistral,pshohel/gemini-3-pro-preview,deepseek-r1,llama3.1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
 	                        The model LLM to use for every participant (default:
 	                        use a random non-trivial model for every participant).
 	  --mediator-type {llm,trivial}
@@ -83,18 +83,40 @@ Using GitHub client (if installed):
 	                        survey.log).
 	  --trace               Display stack trace information when exceptions are
 	                        caught.
-
-	$ python3 src/interact.py explicate --help
-
+	
+	$ python3 src/interact.py vary --help
+	usage: interact.py vary [-h] [--models MODEL [MODEL ...]] [--exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]]
+	                        [--num-variants NUM_VARIANTS] [--sleep SECONDS] [--random-seed SEED] [--logfile LOGFILE]
+	                        [--trace]
+	                        OUTPUT
+	
+	positional arguments:
+	  OUTPUT                The filename to which the CSV data will be written
+	
+	options:
+	  -h, --help            show this help message and exit
+	  --models MODEL [MODEL ...]
+	                        A list of the model(s) to use for generating variations (default: all non-trivial models)
+	  --exclude EXCLUDED_MODEL [EXCLUDED_MODEL ...]
+	                        A list of models that should not be used when generating variations. In the case of a
+	                        conflict between --models and --exclude, the latter takes priority. (default: no models
+	                        excluded)
+	  --num-variants NUM_VARIANTS
+	                        The total number of variations of the given label to generate.
+	  --sleep SECONDS       The number of seconds to sleep after generating each set of variations (default: 60 seconds)
+	  --random-seed SEED    Specify a SEED for the random number generator (normally only for testing).
+	  --logfile LOGFILE     Write logging output to LOGFILE (defaults to 'vary.log')
+	  --trace               Display stack trace information when exceptions are caught.
+	
 	$ python3 src/interact.py interact --help
 	usage: interact.py interact [-h] [--transient] [--random-seed SEED]
 	                            [--logfile LOGFILE] [--trace]
 	                            MODEL TEMPERATURE
-
+	
 	positional arguments:
 	  MODEL               The name of the model to interact with.
 	  TEMPERATURE         The temperature to use.
-
+	
 	options:
 	  -h, --help          show this help message and exit
 	  --transient         Do not keep track of the conversation but begin every
