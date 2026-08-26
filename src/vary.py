@@ -206,6 +206,16 @@ def generate_variations(labels, cli_args):
     to generate variations for may be customized using: cli_args["models"] and/or
     cli_args["exclude"]
     """
+    def write_csvfile(writer, model, mediator_model, label, variants):
+        for variant in variants:
+            row = {
+                "model": model,
+                "mediator_model": mediator_model,
+                "label": label,
+                "variant": variant,
+            }
+            writer.writerow(row)
+
     csv_filename = cli_args["OUTPUT"]
     min_sleep_time = cli_args.get("sleep") if cli_args.get("sleep") is not None \
         else DEFAULT_SLEEP
@@ -257,14 +267,14 @@ def generate_variations(labels, cli_args):
                 )
                 # A model should not be the mediator for its own kind:
                 if model != mediator.get_model():
-                    variants = mediator.prune_variants(
+                    pruned_variants = mediator.prune_variants(
                         label,
                         original_instructions,
                         variants,
                         num_variants
                     )
                 else:
-                    variants = mediator_alt.prune_variants(
+                    pruned_variants = mediator_alt.prune_variants(
                         label,
                         original_instructions,
                         variants,
@@ -272,19 +282,22 @@ def generate_variations(labels, cli_args):
                     )
 
                 duration = round(time.time() - start)
-                logger.info(f"Got {len(variants)} sentences from mediator after {duration}s.")
+                logger.info(
+                    f"Got {len(pruned_variants)} sentences from mediator after {duration}s."
+                )
                 mediator.reset()
 
-                for i, variant in enumerate(variants):
-                    row = {
-                        "model": model,
-                        "label": label,
-                        "variant": variant,
-                    }
-                    if not writer:
-                        writer = csv.DictWriter(csvfile, fieldnames=row)
-                        writer.writeheader()
-                    writer.writerow(row)
+                # Output the non-pruned and pruned variants:
+                if not writer:
+                    writer = csv.DictWriter(csvfile, fieldnames=[
+                        "model",
+                        "mediator_model",
+                        "label",
+                        "variant",
+                    ])
+                    writer.writeheader()
+                write_csvfile(writer, model, None, label, variants)
+                write_csvfile(writer, model, mediator.get_model(), label, pruned_variants)
 
                 # Give the CPU(s) a break (unless we are done):
                 if i != len(cli_args["models"]) and j != len(labels):
