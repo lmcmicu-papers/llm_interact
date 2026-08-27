@@ -28,26 +28,13 @@ import signal
 import sys
 import time
 
-from common import generate_context_message
+from common import Timeout, generate_context_message
 from global_vars import MAX_MEMORY, DEFAULT_SLEEP, DEFAULT_VARIER_LLM_TEMPERATURE, \
     DEFAULT_MEDIATOR_LLM_MODEL, DEFAULT_MEDIATOR_LLM_MODEL_ALT, LLM_RESPONSE_TIMEOUT
 from mediator import Mediator
 
 
 logger = logging.getLogger(__name__)
-
-
-# TODO: Generalize the timeout handling mechanism beyond just the varier.
-class Timeout(Exception):
-    pass
-
-
-def timeout_handler(signum, frame):
-    raise Timeout
-
-
-# Register timeout_handler() as the function assigned to SIGALRM signals:
-signal.signal(signal.SIGALRM, timeout_handler)
 
 
 class VarierType(Enum):
@@ -150,7 +137,7 @@ class Varier_LLM:
                 HumanMessage(message),
             ])
         except Timeout:
-            logger.error("Timed out after 30s")
+            logger.error(f"Timed out after {LLM_RESPONSE_TIMEOUT}s")
             return response
 
         # Cancel the timeout timer:

@@ -19,6 +19,7 @@
 import logging
 import random
 import re
+import signal
 import sys
 
 from textwrap import indent
@@ -26,9 +27,9 @@ from enum import Enum
 from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, SystemMessage
 
-from common import ResponseCode, generate_context_message
+from common import ResponseCode, Timeout, generate_context_message
 from global_vars import DEFAULT_MEDIATOR_LLM_TEMPERATURE, DEFAULT_MEDIATOR_LLM_MODEL, \
-    DEFAULT_REPHRASE_RATIO, MAX_MEMORY
+    DEFAULT_REPHRASE_RATIO, MAX_MEMORY, LLM_RESPONSE_TIMEOUT
 
 logger = logging.getLogger(__name__)
 
@@ -155,10 +156,25 @@ class Mediator_LLM:
         self.memory = []
 
     def invoke(self, message):
-        response = self.llm.invoke([
-            SystemMessage(generate_context_message(self.memory)),
-            HumanMessage(message),
-        ]).content.strip("'").strip('"')
+        # Add a timeout:
+        signal.alarm(LLM_RESPONSE_TIMEOUT)
+
+        response = ""
+        try:
+            response = self.llm.invoke([
+                SystemMessage(generate_context_message(self.memory)),
+                HumanMessage(message),
+            ])
+        except Timeout:
+            logger.error(f"Timed out after {LLM_RESPONSE_TIMEOUT}s")
+            return response
+
+        # Cancel the timeout timer:
+        signal.alarm(0)
+
+        # Remove any enclosing quotes:
+        response = response.content.strip("'").strip('"')
+
         # Commit the new response to memory, truncating the existing memory first if we have
         # hit the limit of MAX_MEMORY:
         self.memory = self.memory[-MAX_MEMORY + 1:]

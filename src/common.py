@@ -18,6 +18,7 @@
 
 import logging
 import random
+import signal
 
 from enum import Enum
 
@@ -25,6 +26,18 @@ from global_vars import SUPPORTED_MODELS
 
 
 logger = logging.getLogger(__name__)
+
+
+class Timeout(Exception):
+    pass
+
+
+def timeout_handler(signum, frame):
+    raise Timeout
+
+
+# Register timeout_handler() as the function assigned to SIGALRM signals:
+signal.signal(signal.SIGALRM, timeout_handler)
 
 
 class ResponseCode(Enum):

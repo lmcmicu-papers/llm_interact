@@ -77,7 +77,7 @@ DEFAULT_REPHRASE_RATIO = 0.9
 DEFAULT_SLEEP = 60
 
 # Maximum number of seconds to wait for a response from an LLM:
-LLM_RESPONSE_TIMEOUT = 60 * 60 * 6
+LLM_RESPONSE_TIMEOUT = round(60 * 60 * 7.5)
 
 # The default logfile name will be one of these prefixes followed by the extension 'log':
 DEFAULT_SURVEY_LOGFILE_PREFIX = "survey"
