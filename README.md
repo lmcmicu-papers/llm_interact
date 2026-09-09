@@ -149,7 +149,11 @@ To see the command line options for `interact.py`, run:
 
 The recommended way to run Ollama is through `docker`. The [docker documentation](https://docs.docker.com/engine/install/ubuntu/) contains instructions for installing `docker` on Ubuntu, but they should be applicable to most other linux flavours as well.
 
-Once `docker` has been installed, you will then need to perform the following steps to first build a docker image of our virtual ollama server and then create and run an instance of it in a docker container.
+Once `docker` has been installed, make sure to add yourself to the docker group:
+
+    sudo usermod -aG docker mike
+
+You should then exit your current login session and login again (if you're unsure what to do, just reboot the machine). You will then need to perform the following steps to first build a docker image of the virtual ollama server and then create and run an instance of it in a docker container.
 
 1. Build the `llm_interact` image (the '.' at the end of the command tells `docker build` to use the [Dockerfile](Dockerfile) located in the current working directory):
 
