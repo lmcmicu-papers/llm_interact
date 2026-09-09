@@ -29,14 +29,16 @@ Note that in order for `interact.py` to run correctly, a directory named `data/`
 To see the command line options for `interact.py`, run:
 
 	$ python3 src/interact.py --help
-	usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
+	usage: interact.py [-h]
+	                   {list-models,conduct-survey,vary,analyze,interact,custom} ...
 	
 	Interact with LLMs from the Ollama library in various ways
 	
 	positional arguments:
-	  {conduct-survey,vary,analyze,interact,custom}
+	  {list-models,conduct-survey,vary,analyze,interact,custom}
 	                        Use --help with the subcommand name to get help
 	                        specific to that command.
+	    list-models         Print the list of supported models
 	    conduct-survey      Conduct a survey with N participants
 	    vary                Generate label variants
 	    analyze             Analyze data
@@ -59,7 +61,7 @@ To see the command line options for `interact.py`, run:
 	
 	positional arguments:
 	  OUTPUT                The filename to which the CSV data will be written
-	
+
 	options:
 	  -h, --help            show this help message and exit
 	  --participants N      The number of participants to survey (default: 100)
@@ -71,7 +73,7 @@ To see the command line options for `interact.py`, run:
 	                        participant's temperature (default: 0.2).
 	  --rephrase-ratio R    The proportion of messages (between 0 and 1) that
 	                        should be rephrased by the mediator (default: 0.9).
-	  --participant-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
+		  --participant-model [{trivial,llama3.1,mistral,pshohel/gemini-3-pro-preview,openchat,gemma3:1b,llama3.2,deepseek-r1,gemma,stable-beluga,orca-mini,samantha-mistral,phi4-mini,zephyr}]
 	                        The model LLM to use for every participant (default:
 	                        use a random non-trivial model for every participant).
 	  --mediator-type {llm,trivial}

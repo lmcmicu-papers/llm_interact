@@ -47,6 +47,11 @@ from participant import conduct_survey
 logger = logging.getLogger(__name__)
 
 
+def handle_list_models_args(_args):
+    non_trivial_models = [model for model in SUPPORTED_MODELS if model != "trivial"]
+    print(f"{' '.join(non_trivial_models)}")
+
+
 def handle_survey_args(args):
     """
     Handles the arguments of the conduct-survey subcommand.
@@ -199,6 +204,12 @@ def main(args):
     subparsers = parser.add_subparsers(
         required=True,
         help="Use --help with the subcommand name to get help specific to that command."
+    )
+
+    # The subparser for the 'list-models' subcommand.
+    list_models_parser = subparsers.add_parser(
+        "list-models",
+        help="Print the list of supported models"
     )
 
     # The subparser for the 'conduct-survey' subcommand.
@@ -485,6 +496,7 @@ def main(args):
     )
 
     # Associate the right functions to handle the various subcommand arguments:
+    list_models_parser.set_defaults(subcommand=handle_list_models_args)
     survey_parser.set_defaults(subcommand=handle_survey_args)
     vary_parser.set_defaults(subcommand=handle_vary_args)
     analyze_variations_parser.set_defaults(subcommand=handle_analyze_variations_args)
@@ -500,7 +512,9 @@ def main(args):
 
     # Configure the logger. Possible logging levels are: NOTSET, DEBUG, INFO, WARNING, ERROR,
     # and CRITICAL (see https://docs.python.org/3/library/logging.html#logging-levels).
-    if subcommand == handle_survey_args:
+    if subcommand == handle_list_models_args:
+        logfile_prefix = "list-models"
+    elif subcommand == handle_survey_args:
         logfile_prefix = DEFAULT_SURVEY_LOGFILE_PREFIX
     elif subcommand == handle_vary_args:
         logfile_prefix = DEFAULT_VARIATIONS_LOGFILE_PREFIX
@@ -513,7 +527,7 @@ def main(args):
     else:
         logfile_prefix = DEFAULT_CUSTOM_LOGFILE_PREFIX
 
-    logfile = args["logfile"] or f"{logfile_prefix}.log"
+    logfile = args.get("logfile", f"{logfile_prefix}.log")
     # We copy the value back to args since it will be read later and logged:
     args["logfile"] = logfile
     logging.basicConfig(
@@ -522,10 +536,10 @@ def main(args):
         filename=logfile,
         filemode='w'
     )
-    print(f"The log is being written to '{logfile}'.")
+    logger.debug(f"The log is being written to '{logfile}'.")
 
     # If there is a --random-seed, set it here:
-    if args["random_seed"] is not None:
+    if args.get("random_seed") is not None:
         random.seed(args["random_seed"])
         numpy.random.seed(args["random_seed"])
 

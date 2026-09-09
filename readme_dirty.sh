@@ -20,14 +20,16 @@
 
 cat <<EOF > saved_usage.$$
 $ python3 src/interact.py --help
-usage: interact.py [-h] {conduct-survey,vary,analyze,interact,custom} ...
+usage: interact.py [-h]
+                   {list-models,conduct-survey,vary,analyze,interact,custom} ...
 
 Interact with LLMs from the Ollama library in various ways
 
 positional arguments:
-  {conduct-survey,vary,analyze,interact,custom}
+  {list-models,conduct-survey,vary,analyze,interact,custom}
                         Use --help with the subcommand name to get help
                         specific to that command.
+    list-models         Print the list of supported models
     conduct-survey      Conduct a survey with N participants
     vary                Generate label variants
     analyze             Analyze data
