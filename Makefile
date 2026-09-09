@@ -20,28 +20,45 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := responses.db
-# We don't want this:
-# .DELETE_ON_ERROR:
 .SUFFIXES:
 
-.PHONY: test test_survey test_vary llm analyze
+# Build a database of variations:
 
-data:
-	ln -s default_data data
+variations.db: variations.csv
+	rm -f variations.db
+	sqlite3 variations.db -cmd '.mode csv' -cmd '.import variations.csv variations' ''
 
+variations.csv:
+	test -f $@ && mv -f $@ $@.$$(date +%s) || true
+	python3 src/interact.py vary --trace $< $@
 
-analyze:
-	mkdir -p Results/2026-07-20/analysis
-	python3 src/interact.py analyze --trace variations \
-		Results/2026-07-20/variations.csv Results/2026-07-20/analysis
+# Build a database of responses to a questionnaire:
 
-test/output:
-	mkdir -p $@
+responses.db: responses.csv
+	rm -f responses.db
+	sqlite3 responses.db -cmd '.mode csv' -cmd '.import responses.csv responses' ''
 
-test_data: | data
+responses.csv:
+	python3 src/interact.py conduct-survey --trace $< $@
+
+clean: cleantest
+	rm -f responses.db responses.csv variations.db variations.csv vary.log survey.log
+
+# Tests
+
+.PHONY: test prepare_test_data restore_normal_data test_vary test_survey cleantest
 
 # Sanity test that black-boxes the calls to ollama:
-test: cleantest test_data test_vary test_survey
+test: cleantest prepare_test_data test_vary test_survey restore_normal_data
+
+prepare_test_data:
+	test ! -h data.bak || mv -f data.bak data.bak.$$(date +"%s")
+	test ! -h data || mv -f data data.bak
+	ln -s default_data data
+
+restore_normal_data:
+	rm -f data
+	mv -f data.bak data
 
 test_vary: | test/output
 	python3 src/interact.py vary $|/variations.csv \
@@ -58,26 +75,8 @@ test_survey: | test/output
 	sqlite3 test/output/responses.db -cmd '.mode csv' \
 		-cmd '.import test/output/responses.csv responses' ''
 
-variations.db: variations.csv
-	rm -f variations.db
-	sqlite3 variations.db -cmd '.mode csv' -cmd '.import variations.csv variations' ''
-
-variations.csv:
-	test -f $@ && mv -f $@ $@.$$(date +%s) || true
-	python3 src/interact.py vary --trace $< $@
-
-responses.db: responses.csv
-	rm -f responses.db
-	sqlite3 responses.db -cmd '.mode csv' -cmd '.import responses.csv responses' ''
-
-responses.csv:
-	python3 src/interact.py conduct-survey --trace $< $@
-
-llm:
-	docker pull ollama/ollama:0.12.1-rc0
-
 cleantest:
 	rm -Rf test/output
 
-clean: cleantest
-	rm -f responses.db responses.csv variations.db variations.csv vary.log survey.log
+test/output:
+	mkdir -p $@

@@ -203,9 +203,9 @@ class Mediator_LLM:
                 variants=variants,
             )
 
-            logger.info(f"Sending mediator the message: {mediator_message}")
+            logger.info(f"Sending mediator {self.model} the message: {mediator_message}")
             response = self.invoke(mediator_message)
-            logger.info(f"Received a reponse from the mediator:\n{response}")
+            logger.info(f"Received a reponse from mediator {self.model}:\n{response}")
             # Split the response by newline and return all the lines that have word
             # characters in them:
             return [
