@@ -307,8 +307,8 @@ def generate_variations(theses, cli_args):
 def prepare_varier_thesis(num_variants, thesis_type):
     if thesis_type.casefold() == "label":
         filename = "data/variation_preparation_prompt_label.txt"
-    elif thesis_type.casefold() == "slogan":
-        filename = "data/variation_preparation_prompt_slogan.txt"
+    elif thesis_type.casefold() == "sentence":
+        filename = "data/variation_preparation_prompt_sentence.txt"
     else:
         logger.error(f"Invalid thesis_type: {thesis_type}")
         sys.exit(1)

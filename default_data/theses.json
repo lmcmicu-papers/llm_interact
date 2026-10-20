@@ -1,7 +1,7 @@
 {
   "0": {
     "message": "GNU's not UNIX",
-    "type": "slogan",
+    "type": "sentence",
     "best": "gemini",
     "gemini": "GNU is not the operating systen UNIX.",
     "gpt": "GNU is similar to UNIX but not the same.",
