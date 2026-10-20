@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 # TODO: Make this a command-line argument:
-USE_MEDIATION = True
+USE_MEDIATION = False
 
 
 class VarierType(Enum):
@@ -290,7 +290,9 @@ def generate_variations(theses, cli_args):
                     mediator.reset()
 
                     # Output the pruned variants to CSV:
-                    write_csvfile(writer, model, assigned_mediator_model, thesis["message"], pruned_variants)
+                    write_csvfile(
+                        writer, model, assigned_mediator_model, thesis["message"], pruned_variants
+                    )
 
                 # Give the CPU(s) a break (unless we are done):
                 if i != len(cli_args["models"]) and j != len(theses):
