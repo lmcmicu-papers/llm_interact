@@ -77,7 +77,7 @@ def handle_survey_args(args):
         raise Exception(f"The file '{csv_filename}' is not writable.")
 
     # Get the messages:
-    messages = list(THESES.keys())
+    messages = [thesis["message"] for _, thesis in THESES.items()]
 
     # Conduct the survey:
     logger.info(
@@ -140,14 +140,11 @@ def handle_vary_args(args):
     if not os.path.isdir(csv_dir) or not os.access(csv_dir, os.W_OK):
         raise Exception(f"The file '{csv_filename}' is not writable.")
 
-    # Get the messages:
-    messages = list(THESES.keys())
-
     logger.info(
         f"Generating {num_variants} variants per message per model, using "
         f"params: {pformat(args)}"
     )
-    generate_variations(messages, args)
+    generate_variations(THESES, args)
 
 
 def handle_analyze_survey_args(args):

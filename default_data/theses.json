@@ -1,8 +1,18 @@
 {
-  "GNU's not UNIX": {
+  "0": {
+    "message": "GNU's not UNIX",
+    "type": "slogan",
     "best": "gemini",
     "gemini": "GNU is not the operating systen UNIX.",
     "gpt": "GNU is similar to UNIX but not the same.",
     "claude": "GNU and UNIX are opposites."
+  },
+  "1": {
+    "message": "The Free Software Foundation",
+    "type": "label",
+    "best": "gemini",
+    "gemini": "The FSF.",
+    "gpt": "It's the FSF!",
+    "claude": "The FSF."
   }
 }

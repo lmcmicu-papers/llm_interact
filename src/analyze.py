@@ -96,10 +96,10 @@ def get_ngrams(sentence):
 
 def generate_benchmarks():
     benchmark_content = {}
-    for thesis, variations in THESES.items():
-        benchmark_content[thesis] = {"best": variations["best"]}
+    for _, thesis in THESES.items():
+        benchmark_content[thesis["message"]] = {"best": thesis["best"]}
         for model in ["claude", "gpt", "gemini"]:
-            text = variations[model]
+            text = thesis[model]
             ngrams = get_ngrams(text)
             benchmark_content[thesis][model] = ngrams
     return benchmark_content

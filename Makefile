@@ -43,6 +43,7 @@ responses.csv:
 
 clean: cleantest
 	rm -f responses.db responses.csv variations.db variations.csv vary.log survey.log
+	rm -Rf data.bak.*
 
 # Tests
 
@@ -62,7 +63,7 @@ restore_normal_data:
 
 test_vary: | test/output
 	python3 src/interact.py vary $|/variations.csv \
-		--models trivial --sleep 0 --random-seed 0 --logfile test/output/vary.log
+		--models trivial --sleep 0 --random-seed 0 --logfile test/output/vary.log --trace
 	diff --strip-trailing-cr -q test/expected/variations.csv $|/variations.csv
 	sqlite3 test/output/variations.db -cmd '.mode csv' \
 		-cmd '.import test/output/variations.csv variations' ''
@@ -70,7 +71,7 @@ test_vary: | test/output
 test_survey: | test/output
 	python3 src/interact.py conduct-survey $|/responses.csv \
 		--sleep 0 --mediator-type trivial --participant-model trivial --random-seed 0 \
-		--logfile test/output/survey.log
+		--logfile test/output/survey.log --trace
 	diff --strip-trailing-cr -q test/expected/responses.csv $|/responses.csv
 	sqlite3 test/output/responses.db -cmd '.mode csv' \
 		-cmd '.import test/output/responses.csv responses' ''
