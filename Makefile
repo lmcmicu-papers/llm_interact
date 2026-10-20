@@ -31,7 +31,7 @@ variations.db: variations.csv
 variations.csv:
 	test -f $@ && mv -f $@ $@.$$(date +%s) || true
 	python3 src/interact.py vary --models llama3.1 mistral llama3.2 pshohel/gemini-3-pro-preview deepseek-r1 \
-		--trace $< $@
+		--logfile test/output/vary.log --trace $< $@
 
 # Build a database of responses to a questionnaire:
 
